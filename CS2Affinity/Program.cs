@@ -269,10 +269,6 @@ class P
         {
             var swTotal = Stopwatch.StartNew();
 
-            // Intentamos detectar una Steam "lista" mediante varias heurísticas:
-            // 1) SteamWebHelper presente -> listo
-            // 2) Ventana principal visible y con título -> listo
-            // 3) Steam lleva suficiente tiempo en ejecución (>8s) -> listo
             while (swTotal.ElapsedMilliseconds < totalTimeoutMs)
             {
                 var steamProc = Process.GetProcessesByName("steam").FirstOrDefault();
@@ -282,10 +278,9 @@ class P
                     continue;
                 }
 
-                // 1) steamwebhelper indica que parte de la UI/procesos auxiliares se han iniciado
                 if (Process.GetProcessesByName("steamwebhelper").Any())
                 {
-                    // Si requerimos estrictez (acaba de arrancar) asegurarnos de que Steam lleve un tiempo razonable
+                    
                     if (strictWhenJustStarted)
                     {
                         try
@@ -337,7 +332,6 @@ class P
                 Thread.Sleep(300);
             }
 
-            // Si no llegamos a detectar nada, usamos el fallback con aviso y comprobación final
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("[AVISO] No se detectó Steam completamente; esperando un tiempo extra antes de continuar...");
             Console.ResetColor();
