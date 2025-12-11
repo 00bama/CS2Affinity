@@ -4,6 +4,7 @@ project.lock.json
 .DS_Store
 *.pyc
 nupkg/
+*.pdb
 
 # Visual Studio Code
 .vscode
@@ -35,3 +36,9 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+# Replit
+attached_assets/
+replit.md
+.replit
+replit.nix

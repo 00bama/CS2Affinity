@@ -4,9 +4,9 @@ using System.IO;
 using System.Threading;
 using Microsoft.Win32;
 
-class Program
+class P
 {
-    static readonly string CS2_DEFAULT_PATH = @"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\game\bin\win64\cs2.exe";
+    static readonly string _p = @"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\game\bin\win64\cs2.exe";
     
     static void Main()
     {
@@ -19,15 +19,15 @@ class Program
         Console.ResetColor();
         Console.WriteLine();
 
-        int cpuCount = Environment.ProcessorCount;
-        long affinityMask = (1L << cpuCount) - 2;
+        int _c = Environment.ProcessorCount;
+        long _m = (1L << _c) - 2;
 
-        Console.WriteLine($"[INFO] CPUs detectadas: {cpuCount}");
-        Console.WriteLine($"[INFO] Mascara de afinidad: 0x{affinityMask:X} (CPU0 excluida)");
+        Console.WriteLine($"[INFO] CPUs detectadas: {_c}");
+        Console.WriteLine($"[INFO] Mascara de afinidad: 0x{_m:X} (CPU0 excluida)");
         Console.WriteLine();
 
-        string? steamPath = GetSteamPath();
-        if (string.IsNullOrEmpty(steamPath))
+        string _s = G();
+        if (string.IsNullOrEmpty(_s))
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("[ERROR] No se pudo encontrar la instalacion de Steam.");
@@ -37,10 +37,10 @@ class Program
         }
 
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine($"[INFO] Steam: {steamPath}");
+        Console.WriteLine($"[INFO] Steam: {_s}");
         Console.ResetColor();
 
-        if (!IsSteamRunning())
+        if (!R())
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("[INICIANDO] Abriendo Steam...");
@@ -48,24 +48,14 @@ class Program
 
             try
             {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = steamPath,
-                    UseShellExecute = true
-                });
-
+                Process.Start(new ProcessStartInfo { FileName = _s, UseShellExecute = true });
                 Console.WriteLine("[ESPERANDO] Esperando Steam...");
                 
-                int steamWaitTime = 0;
-                while (!IsSteamRunning() && steamWaitTime < 60)
-                {
-                    Console.Write(".");
-                    Thread.Sleep(1000);
-                    steamWaitTime++;
-                }
+                int _w = 0;
+                while (!R() && _w < 60) { Console.Write("."); Thread.Sleep(1000); _w++; }
                 Console.WriteLine();
 
-                if (!IsSteamRunning())
+                if (!R())
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("[ERROR] Steam no inicio a tiempo.");
@@ -77,10 +67,10 @@ class Program
                 Console.WriteLine("[INFO] Steam listo. Esperando 5 segundos...");
                 Thread.Sleep(5000);
             }
-            catch (Exception ex)
+            catch (Exception _e)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"[ERROR] {ex.Message}");
+                Console.WriteLine($"[ERROR] {_e.Message}");
                 Console.ResetColor();
                 Thread.Sleep(3000);
                 return;
@@ -99,30 +89,21 @@ class Program
 
         try
         {
-            if (File.Exists(CS2_DEFAULT_PATH))
+            if (File.Exists(_p))
             {
                 Console.WriteLine("[INFO] Usando ruta directa de CS2...");
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = CS2_DEFAULT_PATH,
-                    UseShellExecute = true,
-                    WorkingDirectory = Path.GetDirectoryName(CS2_DEFAULT_PATH)
-                });
+                Process.Start(new ProcessStartInfo { FileName = _p, UseShellExecute = true, WorkingDirectory = Path.GetDirectoryName(_p) });
             }
             else
             {
                 Console.WriteLine("[INFO] Usando Steam para iniciar CS2...");
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = "steam://rungameid/730",
-                    UseShellExecute = true
-                });
+                Process.Start(new ProcessStartInfo { FileName = "steam://rungameid/730", UseShellExecute = true });
             }
         }
-        catch (Exception ex)
+        catch (Exception _e)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"[ERROR] {ex.Message}");
+            Console.WriteLine($"[ERROR] {_e.Message}");
             Console.ResetColor();
             Thread.Sleep(3000);
             return;
@@ -132,23 +113,17 @@ class Program
         Console.WriteLine("[ESPERANDO] Buscando cs2.exe...");
         Console.ResetColor();
 
-        Process? cs2Process = null;
-        int waitTime = 0;
+        Process _x = null;
+        int _t = 0;
 
-        while (cs2Process == null && waitTime < 120)
+        while (_x == null && _t < 120)
         {
-            var processes = Process.GetProcessesByName("cs2");
-            if (processes.Length > 0)
-                cs2Process = processes[0];
-            else
-            {
-                Console.Write(".");
-                Thread.Sleep(1000);
-                waitTime++;
-            }
+            var _a = Process.GetProcessesByName("cs2");
+            if (_a.Length > 0) _x = _a[0];
+            else { Console.Write("."); Thread.Sleep(1000); _t++; }
         }
 
-        if (cs2Process == null)
+        if (_x == null)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\n[ERROR] CS2 no inicio a tiempo.");
@@ -159,7 +134,7 @@ class Program
 
         Console.WriteLine();
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine($"[OK] cs2.exe detectado - PID: {cs2Process.Id}");
+        Console.WriteLine($"[OK] cs2.exe detectado - PID: {_x.Id}");
         Console.ResetColor();
         Console.WriteLine("[INFO] Esperando 15 segundos para inicializacion...");
         Thread.Sleep(15000);
@@ -169,25 +144,25 @@ class Program
         Console.ResetColor();
         Console.WriteLine();
 
-        DateTime startTime = DateTime.Now;
-        TimeSpan duration = TimeSpan.FromSeconds(30);
+        DateTime _d = DateTime.Now;
+        TimeSpan _u = TimeSpan.FromSeconds(30);
 
-        while (!cs2Process.HasExited && (DateTime.Now - startTime) < duration)
+        while (!_x.HasExited && (DateTime.Now - _d) < _u)
         {
             try
             {
-                cs2Process.PriorityClass = ProcessPriorityClass.High;
-                cs2Process.ProcessorAffinity = (IntPtr)affinityMask;
+                _x.PriorityClass = ProcessPriorityClass.High;
+                _x.ProcessorAffinity = (IntPtr)_m;
 
-                int remaining = (int)(duration - (DateTime.Now - startTime)).TotalSeconds;
+                int _r = (int)(_u - (DateTime.Now - _d)).TotalSeconds;
                 Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] HIGH + 0x{affinityMask:X} ({remaining}s)");
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] HIGH + 0x{_m:X} ({_r}s)");
                 Console.ResetColor();
             }
-            catch (Exception ex)
+            catch (Exception _e)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"[ERROR] {ex.Message}");
+                Console.WriteLine($"[ERROR] {_e.Message}");
                 Console.ResetColor();
             }
 
@@ -204,23 +179,22 @@ class Program
         Thread.Sleep(2000);
     }
 
-    static string? GetSteamPath()
+    static string G()
     {
         try
         {
-            using (RegistryKey? key = Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam"))
+            using (RegistryKey _k = Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam"))
             {
-                if (key != null)
+                if (_k != null)
                 {
-                    string? steamExe = key.GetValue("SteamExe") as string;
-                    if (!string.IsNullOrEmpty(steamExe) && File.Exists(steamExe))
-                        return steamExe;
+                    string _v = _k.GetValue("SteamExe") as string;
+                    if (!string.IsNullOrEmpty(_v) && File.Exists(_v)) return _v;
                 }
             }
         }
         catch { }
 
-        string[] possiblePaths = new string[]
+        string[] _l = new string[]
         {
             @"C:\Program Files (x86)\Steam\steam.exe",
             @"C:\Program Files\Steam\steam.exe",
@@ -229,18 +203,9 @@ class Program
             @"E:\Steam\steam.exe"
         };
 
-        foreach (string path in possiblePaths)
-        {
-            if (File.Exists(path))
-                return path;
-        }
-
+        foreach (string _i in _l) { if (File.Exists(_i)) return _i; }
         return null;
     }
 
-    static bool IsSteamRunning()
-    {
-        var processes = Process.GetProcessesByName("steam");
-        return processes.Length > 0;
-    }
+    static bool R() { return Process.GetProcessesByName("steam").Length > 0; }
 }
