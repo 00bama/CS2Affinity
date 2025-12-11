@@ -1,0 +1,57 @@
+ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+บ        CS2 AFFINITY - by touch grass                   บ
+บ        Prioridad HIGH + CPU0 desactivada               บ
+ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+[INFO] CPUs detectadas: 20
+[INFO] Mascara de afinidad: 0xFFFFE (CPU0 excluida)
+
+[AVISO] Ejecutando sin privilegios elevados. Para aplicar prioridad/afinidad completa, ejecuta como Administrador.
+
+[INFO] Steam: c:/program files (x86)/steam/steam.exe
+[INICIANDO] Abriendo Steam...
+[ESPERANDO] Esperando Steam y SteamWebHelper...
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 0,3s (<12s); esperando m s... (335ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 0,8s (<12s); esperando m s... (843ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 1,4s (<12s); esperando m s... (1349ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 1,9s (<12s); esperando m s... (1855ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 2,4s (<12s); esperando m s... (2363ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 2,9s (<12s); esperando m s... (2868ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 3,4s (<12s); esperando m s... (3374ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 3,9s (<12s); esperando m s... (3881ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 4,4s (<12s); esperando m s... (4388ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 4,9s (<12s); esperando m s... (4894ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 5,4s (<12s); esperando m s... (5400ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 5,9s (<12s); esperando m s... (5907ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 6,4s (<12s); esperando m s... (6413ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 6,9s (<12s); esperando m s... (6919ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 7,4s (<12s); esperando m s... (7425ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 7,9s (<12s); esperando m s... (7931ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 8,4s (<12s); esperando m s... (8438ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 8,9s (<12s); esperando m s... (8944ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 9,5s (<12s); esperando m s... (9449ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 10,0s (<12s); esperando m s... (9955ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 10,5s (<12s); esperando m s... (10461ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 11,0s (<12s); esperando m s... (10967ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 11,5s (<12s); esperando m s... (11473ms)
+[INFO] steamwebhelper detectado pero Steam se iniciข hace 12,0s (<12s); esperando m s... (11979ms)
+[INFO] steamwebhelper detectado; Steam listo.
+[INFO] Steam listo.
+[INICIANDO] Ejecutando CS2...
+[INFO] Usando ruta directa de CS2...
+[ESPERANDO] Buscando cs2.exe...
+
+[OK] cs2.exe detectado - PID: 19472
+[INFO] Esperando 15 segundos para inicializacion...
+[ACTIVO] Aplicando optimizaciones (30 segundos)...
+
+[20:02:58] HIGH + 0xFFFFE (29s)
+[20:03:03] HIGH + 0xFFFFE (24s)
+[20:03:08] HIGH + 0xFFFFE (19s)
+[20:03:13] HIGH + 0xFFFFE (14s)
+[20:03:18] HIGH + 0xFFFFE (9s)
+[20:03:23] HIGH + 0xFFFFE (4s)
+
+ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+บ  [OK] Optimizaciones aplicadas - Cerrando...           บ
+ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ

@@ -1,0 +1,72 @@
+name: Build and attach release
+
+on:
+  push:
+    tags: # Trigger on tag push like v1.0.0
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore CS2Affinity/CS2Affinity.csproj
+
+      - name: Publish trimmed single-file EXE
+        run: |
+          dotnet publish CS2Affinity/CS2Affinity.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:PublishTrimmed=true -o output
+
+      - name: Strip symbols
+        shell: powershell
+        run: |
+          $exe = "output\CS2Affinity.exe"
+          if (-Not (Test-Path $exe)) { Write-Error "EXE not found: $exe"; exit 1 }
+          Remove-Item -Path "output\*.pdb" -ErrorAction SilentlyContinue
+
+      - name: Sign EXE (optional)
+        if: ${{ secrets.SIGNING_PFX != '' && secrets.SIGNING_PFX_PASSWORD != '' }}
+        shell: powershell
+        env:
+          PFX_B64: ${{ secrets.SIGNING_PFX }}
+          PFX_PASSWORD: ${{ secrets.SIGNING_PFX_PASSWORD }}
+        run: |
+          $pfxPath = "signing.pfx"
+          [IO.File]::WriteAllBytes($pfxPath, [Convert]::FromBase64String($env:PFX_B64))
+          Write-Host "Signing EXE with provided certificate..."
+          $signtool = 'C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x64\\signtool.exe'
+          if (-Not (Test-Path $signtool)) { Write-Error "signtool not found at $signtool"; exit 1 }
+          & $signtool sign /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /f $pfxPath /p $env:PFX_PASSWORD output\CS2Affinity.exe
+          & $signtool verify /pa /v output\CS2Affinity.exe
+
+      - name: Compress signed EXE
+        shell: powershell
+        run: |
+          Compress-Archive -Path "output\CS2Affinity.exe" -DestinationPath "output\CS2Affinity.zip" -Force
+
+      - name: Compute SHA256 checksum for ZIP
+        shell: powershell
+        run: |
+          $zip = "output\CS2Affinity.zip"
+          if (-Not (Test-Path $zip)) { Write-Error "ZIP not found: $zip"; exit 1 }
+          $hash = Get-FileHash -Path $zip -Algorithm SHA256
+          "$($hash.Hash)  CS2Affinity.zip" | Out-File -FilePath "output\CS2Affinity.zip.sha256" -Encoding ASCII
+          Write-Host "Checksum written to output\CS2Affinity.zip.sha256"
+
+      - name: Create GitHub Release and upload assets
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: |
+            output/CS2Affinity.exe
+            output/CS2Affinity.zip
+            output/CS2Affinity.zip.sha256
