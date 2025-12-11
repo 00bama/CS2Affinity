@@ -26,7 +26,7 @@ Optimizador de rendimiento para Counter-Strike 2 que aplica automáticamente con
 
 ## Créditos
 
-Dedicado para el canal de **Alcalde**
+Dedicado para el canal del **Alcalde**
 
 Desarrollado por **00bama**
 
