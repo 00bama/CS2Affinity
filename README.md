@@ -1,6 +1,7 @@
 # CS2 Affinity
 
 Optimizador de rendimiento para Counter-Strike 2 que aplica automáticamente configuraciones de afinidad de CPU y prioridad de proceso.
+**¡¡¡IMPORTANTE!!!** TODAVÍA NO FUNCIONA AL 100% YA QUE ME ESTÁ DANDO PROBLEMAS CON EL VAC PERO EN CUANTO LO SOLUCIONE SUBIRÉ OTRA RELEASE
 
 ## Características
 
