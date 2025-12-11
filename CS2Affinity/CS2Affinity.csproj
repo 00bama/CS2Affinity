@@ -15,7 +15,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AssemblyName>CS2Affinity</AssemblyName>
     <Product>CS2 Affinity Optimizer</Product>
-    <Company>touch grass</Company>
+    <Company>00bama</Company>
     <Version>1.0.0</Version>
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>

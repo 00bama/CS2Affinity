@@ -1,0 +1,57 @@
+name: Build and attach release
+
+on:
+  push:
+    tags: # Trigger on tag push like v1.0.0
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore CS2Affinity/CS2Affinity.csproj
+
+      - name: Publish single-file EXE
+        run: dotnet publish CS2Affinity/CS2Affinity.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true -o output
+
+      - name: Compute SHA256 checksum
+        shell: powershell
+        run: |
+          $exe = "output\CS2Affinity.exe"
+          if (-Not (Test-Path $exe)) { Write-Error "EXE not found: $exe"; exit 1 }
+          $hash = Get-FileHash -Path $exe -Algorithm SHA256
+          "$($hash.Hash)  CS2Affinity.exe" | Out-File -FilePath "output\CS2Affinity.exe.sha256" -Encoding ASCII
+          Write-Host "Checksum written to output\CS2Affinity.exe.sha256"
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+
+      - name: Upload EXE to release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: output/CS2Affinity.exe
+          asset_name: CS2Affinity.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload checksum to release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: output/CS2Affinity.exe.sha256
+          asset_name: CS2Affinity.exe.sha256
+          asset_content_type: text/plain
