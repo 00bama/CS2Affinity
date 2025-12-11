@@ -47,9 +47,10 @@ class Program
                 Console.WriteLine($"Error aplicando cambios: {ex.Message}");
             }
 
-            Thread.Sleep(5000); // reaplicar cada 5 segundos
+            Thread.Sleep(5000);
         }
 
         Console.WriteLine("cs2.exe ha terminado. Saliendo...");
     }
 }
+
