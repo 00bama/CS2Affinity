@@ -18,10 +18,10 @@ Optimizador de rendimiento para Counter-Strike 2 que aplica automáticamente con
 
 ## Uso
 
-1. Descargar `CS2Affinity.exe`
-2. Ejecutar como **Administrador** (obligatorio)
-3. La aplicación iniciará Steam y CS2 automáticamente
-4. Las optimizaciones se aplicarán durante 30 segundos
+1. Descargar `CS2Affinity.exe` en la pestaña de **Releases**
+2. Ejecutar como **Administrador** preferiblemente
+3. La aplicación iniciará Steam (si no está iniciado) y CS2 automáticamente
+4. Las optimizaciones se aplicarán durante un periodo de 30 segundos para evitar superposiciones de configuración de Steam
 5. La aplicación se cerrará automáticamente
 
 ## Créditos
