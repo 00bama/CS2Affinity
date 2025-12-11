@@ -22,17 +22,26 @@ jobs:
       - name: Restore
         run: dotnet restore CS2Affinity/CS2Affinity.csproj
 
-      - name: Publish single-file EXE
-        run: dotnet publish CS2Affinity/CS2Affinity.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true -o output
+      - name: Publish trimmed single-file EXE
+        run: |
+          dotnet publish CS2Affinity/CS2Affinity.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:PublishTrimmed=true -o output
 
-      - name: Compute SHA256 checksum
+      - name: Strip symbols and compress EXE
         shell: powershell
         run: |
           $exe = "output\CS2Affinity.exe"
           if (-Not (Test-Path $exe)) { Write-Error "EXE not found: $exe"; exit 1 }
-          $hash = Get-FileHash -Path $exe -Algorithm SHA256
-          "$($hash.Hash)  CS2Affinity.exe" | Out-File -FilePath "output\CS2Affinity.exe.sha256" -Encoding ASCII
-          Write-Host "Checksum written to output\CS2Affinity.exe.sha256"
+          Remove-Item -Path "output\*.pdb" -ErrorAction SilentlyContinue
+          Compress-Archive -Path $exe -DestinationPath "output\CS2Affinity.zip" -Force
+
+      - name: Compute SHA256 checksum for ZIP
+        shell: powershell
+        run: |
+          $zip = "output\CS2Affinity.zip"
+          if (-Not (Test-Path $zip)) { Write-Error "ZIP not found: $zip"; exit 1 }
+          $hash = Get-FileHash -Path $zip -Algorithm SHA256
+          "$($hash.Hash)  CS2Affinity.zip" | Out-File -FilePath "output\CS2Affinity.zip.sha256" -Encoding ASCII
+          Write-Host "Checksum written to output\CS2Affinity.zip.sha256"
 
       - name: Create GitHub Release
         id: create_release
@@ -40,18 +49,18 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
 
-      - name: Upload EXE to release
+      - name: Upload ZIP to release
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: output/CS2Affinity.exe
-          asset_name: CS2Affinity.exe
-          asset_content_type: application/octet-stream
+          asset_path: output/CS2Affinity.zip
+          asset_name: CS2Affinity.zip
+          asset_content_type: application/zip
 
       - name: Upload checksum to release
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: output/CS2Affinity.exe.sha256
-          asset_name: CS2Affinity.exe.sha256
+          asset_path: output/CS2Affinity.zip.sha256
+          asset_name: CS2Affinity.zip.sha256
           asset_content_type: text/plain
