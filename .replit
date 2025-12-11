@@ -20,3 +20,26 @@ deploymentTarget = "cloudrun"
 
 [agent]
 expertMode = true
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Build Info"
+
+[[workflows.workflow]]
+name = "Build Info"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"=== CS2Affinity Build Complete ===\" && echo \"\" && echo \"Archivo compilado:\" && ls -lh output/CS2Affinity.exe && echo \"\" && echo \"Para descargar: Panel izquierdo > output > CS2Affinity.exe > Click derecho > Download\""
+
+[workflows.workflow.metadata]
+outputType = "console"
