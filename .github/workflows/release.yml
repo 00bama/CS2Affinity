@@ -43,24 +43,10 @@ jobs:
           "$($hash.Hash)  CS2Affinity.zip" | Out-File -FilePath "output\CS2Affinity.zip.sha256" -Encoding ASCII
           Write-Host "Checksum written to output\CS2Affinity.zip.sha256"
 
-      - name: Create GitHub Release
-        id: create_release
+      - name: Create GitHub Release and upload assets
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-
-      - name: Upload ZIP to release
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: output/CS2Affinity.zip
-          asset_name: CS2Affinity.zip
-          asset_content_type: application/zip
-
-      - name: Upload checksum to release
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: output/CS2Affinity.zip.sha256
-          asset_name: CS2Affinity.zip.sha256
-          asset_content_type: text/plain
+          files: |
+            output/CS2Affinity.zip
+            output/CS2Affinity.zip.sha256
